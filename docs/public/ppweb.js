@@ -53,11 +53,16 @@ const initNotes = async () => {
     const ppnotesJson = await fetch('/ppnotes.json')
     const ppnotesJsonData = await ppnotesJson.json()
     console.log('ppnotesJsonData', ppnotesJsonData)
-    const isChinese = window.location.href.includes('zh')
+    const urlHref = window.location.href
+    const isChinese = urlHref.includes('zh')
+    const ppPathName = window.location.pathname
     const contentValue = isChinese ? ppnotesJsonData.zh : ppnotesJsonData.en
     const titleValue = isChinese ? 'PackPlus公告' : 'PakePlus Notice'
     const okTextValue = isChinese ? '确定' : 'OK'
-    if (ppnotesJsonData.webShow) {
+    if (
+        (ppnotesJsonData.webShow && ppPathName === '/zh/') ||
+        ppPathName === '/'
+    ) {
         createNotes(
             titleValue,
             contentValue,
